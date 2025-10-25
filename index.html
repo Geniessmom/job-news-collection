@@ -1,1 +1,309 @@
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일자리 기사 모음</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .form-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .articles-section {
+            padding: 30px;
+        }
+
+        .articles-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .articles-header h2 {
+            color: #495057;
+        }
+
+        .article-count {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .articles-list {
+            list-style: none;
+        }
+
+        .article-item {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .article-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 5px;
+        }
+
+        .article-url {
+            color: #667eea;
+            text-decoration: none;
+            word-break: break-all;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .article-url:hover {
+            text-decoration: underline;
+        }
+
+        .article-date {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state p {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .form-section, .articles-section {
+                padding: 20px;
+            }
+
+            .article-header {
+                flex-direction: column;
+            }
+
+            .delete-btn {
+                margin-top: 10px;
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📰 일자리 기사 모음</h1>
+            <p>관심있는 일자리 관련 기사를 저장하고 관리하세요</p>
+        </header>
+
+        <div class="form-section">
+            <form id="articleForm">
+                <div class="form-group">
+                    <label for="title">기사 제목</label>
+                    <input type="text" id="title" placeholder="예: IT 업계 채용 트렌드 2025" required>
+                </div>
+                <div class="form-group">
+                    <label for="url">기사 URL</label>
+                    <input type="url" id="url" placeholder="https://example.com/article" required>
+                </div>
+                <button type="submit">기사 추가하기</button>
+            </form>
+        </div>
+
+        <div class="articles-section">
+            <div class="articles-header">
+                <h2>저장된 기사</h2>
+                <span class="article-count" id="articleCount">0개</span>
+            </div>
+            <ul class="articles-list" id="articlesList">
+                <div class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                    </svg>
+                    <p>아직 저장된 기사가 없습니다</p>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 로컬 스토리지에서 기사 가져오기
+        function getArticles() {
+            const articles = localStorage.getItem('jobArticles');
+            return articles ? JSON.parse(articles) : [];
+        }
+
+        // 로컬 스토리지에 기사 저장하기
+        function saveArticles(articles) {
+            localStorage.setItem('jobArticles', JSON.stringify(articles));
+        }
+
+        // 기사 목록 렌더링
+        function renderArticles() {
+            const articles = getArticles();
+            const articlesList = document.getElementById('articlesList');
+            const articleCount = document.getElementById('articleCount');
+
+            articleCount.textContent = `${articles.length}개`;
+
+            if (articles.length === 0) {
+                articlesList.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                        </svg>
+                        <p>아직 저장된 기사가 없습니다</p>
+                    </div>
+                `;
+                return;
+            }
+
+            articlesList.innerHTML = articles.map((article, index) => `
+                <li class="article-item">
+                    <div class="article-header">
+                        <div style="flex: 1;">
+                            <div class="article-title">${escapeHtml(article.title)}</div>
+                            <a href="${escapeHtml(article.url)}" target="_blank" class="article-url">${escapeHtml(article.url)}</a>
+                            <div class="article-date">저장: ${article.date}</div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteArticle(${index})">삭제</button>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        // HTML 이스케이프 처리
